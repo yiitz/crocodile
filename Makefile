@@ -8,7 +8,7 @@ APP_NAME=crocodile
 
 sources=$(wildcard *.go)
 
-build = CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -o ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)$(3) -ldflags "-X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go  
+build = CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -o ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)$(3) -ldflags "-s -w -X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go  
 md5 = md5sum ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)$(3) > ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)_checksum.txt
 tar =  cp core.toml ${BUILD_DIR} && tar -cvzf ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2).tar.gz  -C ${BUILD_DIR}  $(APP_NAME)-$(1)-$(2)$(3) $(APP_NAME)-$(1)-$(2)_checksum.txt core.toml
 delete = rm -rf ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)$(3) ${BUILD_DIR}/$(APP_NAME)-$(1)-$(2)_checksum.txt ${BUILD_DIR}/core.toml
@@ -44,7 +44,7 @@ proto: clean
 	protoc --go_out=plugins=grpc:. core/proto/core.proto
 
 build:
-	go build -o crocodile -ldflags "-X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go
+	go build -o crocodile -ldflags "-s -w -X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go
 frontend:
 	cd web && yarn && yarn run build:prod
 bindata: 

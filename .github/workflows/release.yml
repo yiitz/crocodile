@@ -13,10 +13,11 @@ jobs:
     name: Build And Upload Release
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.13
-        uses: actions/setup-go@v1
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.13
+          go-version: '~1.22.4'
+          cache-dependency-path: "**/go.sum"
 
       - name: Checkout code
         uses: actions/checkout@v2
