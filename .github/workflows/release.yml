@@ -13,10 +13,6 @@ jobs:
     name: Build And Upload Release
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '2' 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
