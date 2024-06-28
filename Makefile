@@ -48,10 +48,10 @@ build:
 frontend:
 	cd web && yarn && yarn run build:prod
 bindata: 
-	go get github.com/go-bindata/go-bindata/...
+	go install github.com/go-bindata/go-bindata@v3.1.3
 	~/go/bin/go-bindata -o=core/utils/asset/asset.go  -pkg=asset web/crocodile/... sql/... && rm -rf ./crocodile
 swag:
-	go get -u github.com/swaggo/swag/cmd/swag
+	go install github.com/swaggo/swag/cmd/swag
 	~/go/bin/swag init -o core/docs
 vet:
 	go vet main.go
