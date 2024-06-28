@@ -1,13 +1,16 @@
 package telegram
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/labulaka521/crocodile/common/log"
 	"github.com/labulaka521/crocodile/common/notify"
-	tb "gopkg.in/tucnak/telebot.v2"
+	"go.uber.org/zap"
 )
 
 var (
@@ -16,39 +19,21 @@ var (
 
 // Telegram conf
 type Telegram struct {
-	token string
-	bot   *tb.Bot
+	token  string
+	client *http.Client
 }
 
 // NewTelegram init telegram
 func NewTelegram(token string) (notify.Sender, error) {
 	telegram := &Telegram{
 		token: token,
-	}
-	client := &http.Client{
-		Timeout: time.Second * 10,
-		Transport: &http.Transport{
-			Proxy: http.ProxyFromEnvironment,
+		client: &http.Client{
+			Timeout: time.Second * 10,
+			Transport: &http.Transport{
+				Proxy: http.ProxyFromEnvironment,
+			},
 		},
 	}
-	bot, err := tb.NewBot(
-		tb.Settings{
-			Token:  token,
-			Poller: &tb.LongPoller{Timeout: time.Second * 10},
-			Client: client,
-		})
-	if err != nil {
-		return nil, err
-	}
-	telegram.bot = bot
-
-	go func() {
-		once.Do(func() {
-			bot.Start()
-		})
-	}()
-	// wait bot start
-	time.Sleep(time.Second)
 	return telegram, nil
 }
 
@@ -60,7 +45,17 @@ func (t *Telegram) Send(tos []string, title string, content string) error {
 			return err
 		}
 		go func(uid int) {
-			_, _ = t.bot.Send(&tb.User{ID: uid}, title+"\n"+title)
+			resp, err := t.client.Post("https://api.telegram.org/bot"+t.token+"/sendMessage",
+				"application/json", strings.NewReader(fmt.Sprintf(`{
+			"chat_id":%d,
+			"text":"%v"
+		}
+		`, uid, title+"\n"+content)))
+			if err != nil {
+				log.Error("push tg message", zap.Error(err))
+				return
+			}
+			resp.Body.Close()
 		}(uid)
 	}
 	return nil
