@@ -21,7 +21,7 @@
     "js-cookie": "2.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "node-sass": "^8.0.0",
+    "node-sass": "^6.0.1",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
@@ -59,8 +59,8 @@
     "vue-template-compiler": "2.6.10"
   },
   "engines": {
-    "node": "^v18.20.3",
-    "npm": ">= 3.0.0"
+    "node": "^16.13.0",
+    "npm": "^8.1.0"
   },
   "browserslist": [
     "> 1%",
