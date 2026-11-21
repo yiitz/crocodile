@@ -57,19 +57,19 @@ export default {
     return {
       type: '1', // 类型
       cycle: { // 周期
-        start: 0,
-        end: 0
+        start: 1,
+        end: 7
       },
       loop: { // 循环
-        start: 0,
-        end: 0
+        start: 1,
+        end: 1
       },
       week: { // 指定周
-        start: 0,
-        end: 0
+        start: 1,
+        end: 1
       },
       work: 0,
-      last: 0,
+      last: 1,
       appoint: [] // 指定
     }
   },
@@ -80,12 +80,33 @@ export default {
         case '1': // 每秒
           result.push('*')
           break
-        case '2': // 年期
-          result.push(`${this.cycle.start}-${this.cycle.end}`)
+        case '2': { // 周期
+          // gorhill/cronexpr 中 7 是 0（星期日）的别名，直接生成 1-7 会得到空集合，
+          // 这里展开成显式列表
+          let days = []
+          let start = Number(this.cycle.start)
+          let end = Number(this.cycle.end)
+          if (start > end) {
+            [start, end] = [end, start]
+          }
+          for (let i = start; i <= end; i++) {
+            days.push(i)
+          }
+          result.push(days.join(','))
           break
-        case '3': // 循环
-          result.push(`${this.loop.start}/${this.loop.end}`)
+        }
+        case '3': { // 循环
+          // gorhill/cronexpr 的星期范围是 0-6，步长 7 会报 invalid interval，
+          // 这里展开成显式列表（7 表示星期日）
+          const start = Number(this.loop.start)
+          const step = Math.max(Number(this.loop.end), 1)
+          let days = []
+          for (let i = start; i <= 7; i += step) {
+            days.push(i)
+          }
+          result.push(days.join(','))
           break
+        }
         case '4': // 指定
           result.push(this.appoint.join(','))
           break

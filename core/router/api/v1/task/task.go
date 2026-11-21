@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -773,8 +774,16 @@ func ParseCron(c *gin.Context) {
 		return
 	}
 
+	cronStr := strings.TrimSpace(string(cronbyte))
+	expr, err := cronexpr.Parse(cronStr)
+	if err != nil {
+		log.Error("cronexpr.Parse failed", zap.Error(err), zap.String("expr", cronStr))
+		resp.JSON(c, resp.ErrCronExpr, nil)
+		return
+	}
+
 	var respTimes []string
-	nextN := cronexpr.MustParse(string(cronbyte)).NextN(time.Now(), 10)
+	nextN := expr.NextN(time.Now(), 10)
 	for _, nextTime := range nextN {
 		respTimes = append(respTimes, nextTime.Format("2006-01-02 15:04:05"))
 	}

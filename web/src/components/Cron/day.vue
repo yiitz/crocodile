@@ -102,13 +102,13 @@ export default {
       type: "5", // 类型
       cycle: {
         // 周期
-        start: 0,
-        end: 0
+        start: 1,
+        end: 2
       },
       loop: {
         // 循环
-        start: 0,
-        end: 0
+        start: 1,
+        end: 1
       },
       week: {
         // 指定周

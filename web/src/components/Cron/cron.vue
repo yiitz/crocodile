@@ -80,7 +80,8 @@ export default {
       yearVal: "",
       cronrecenttime: [],
       disableweek: false,
-      disableday: false
+      disableday: false,
+      cronTimer: null
     };
   },
   watch: {
@@ -142,29 +143,43 @@ export default {
         return;
       }
       let arrays = this.value.split(" ");
-      this.sVal = arrays[0];
-      this.mVal = arrays[1];
-      this.hVal = arrays[2];
-      this.dVal = arrays[3];
-      this.monthVal = arrays[4];
-      this.weekVal = arrays[5];
-      this.yearVal = arrays[6];
+      this.sVal = arrays[0] || "";
+      this.mVal = arrays[1] || "";
+      this.hVal = arrays[2] || "";
+      this.dVal = arrays[3] || "";
+      this.monthVal = arrays[4] || "";
+      this.weekVal = arrays[5] || "";
+      this.yearVal = arrays[6] || "";
     },
     handleChange() {
-      if (this.value === "") {
+      if (this.cronTimer) {
+        clearTimeout(this.cronTimer);
+      }
+      const value = (this.value || "").trim();
+      // 秒 分 时 日 月 周 都填写完整才请求，年可选；避免把不完整表达式发给后端
+      const required = [this.sVal, this.mVal, this.hVal, this.dVal, this.monthVal, this.weekVal];
+      if (value === "" || required.some(item => !item)) {
+        this.cronrecenttime = [];
         return;
       }
-      var query = {
-        expr: window.btoa(this.value)
-      };
-      parsecron(query).then(response => {
-        this.cronrecenttime = response.data;
-      });
+      this.cronTimer = setTimeout(() => {
+        var query = {
+          expr: window.btoa(value)
+        };
+        parsecron(query).then(response => {
+          this.cronrecenttime = response.data;
+        });
+      }, 300);
     }
   },
   created() {
     this.updateVal();
     this.handleChange()
+  },
+  beforeDestroy() {
+    if (this.cronTimer) {
+      clearTimeout(this.cronTimer);
+    }
   },
   components: {
     SecondAndMinute,

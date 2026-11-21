@@ -50,12 +50,12 @@ export default {
       cycle: {
         // 周期
         start: 0,
-        end: 0
+        end: 2
       },
       loop: {
         // 循环
         start: 0,
-        end: 0
+        end: 1
       },
       week: {
         // 指定周
