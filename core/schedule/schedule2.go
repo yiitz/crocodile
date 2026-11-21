@@ -967,6 +967,13 @@ func Init2() error {
 		log.Debug("Crocodile is Not Install")
 		return nil
 	}
+	// migrate old installation schema, ALTER TABLE can take long on big tables
+	migratectx, migratecancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer migratecancel()
+	err = model.MigrateDB(migratectx)
+	if err != nil {
+		log.Error("model.MigrateDB failed", zap.Error(err))
+	}
 	eps, _, err := model.GetTasks(ctx, 0, 0, "", "", "")
 	if err != nil {
 		log.Error("GetTasks failed", zap.Error(err))

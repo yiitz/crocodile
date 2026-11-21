@@ -4,7 +4,7 @@
 -- telegram 20
 -- wechat 20
 CREATE TABLE IF NOT EXISTS `crocodile_user` (
-    `id` CHAR(18)  NOT NULL COMMENT "用户ID",
+    `id` CHAR(20)  NOT NULL COMMENT "用户ID",
     `name` VARCHAR(30) NOT NULL DEFAULT "" COMMENT "用户名",
     `hashpassword` VARCHAR(100) NOT NULL DEFAULT "" COMMENT "加密密码",
     `role` INT(1) NOT NULL DEFAULT 0 COMMENT "用户类型 1:普通用户 2:管理员 3:访客",

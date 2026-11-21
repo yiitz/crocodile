@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `crocodile_operate` (
         `id` INT  AUTO_INCREMENT COMMENT "ID",
-        `uid` CHAR(18) NOT NULL DEFAULT "" COMMENT "操作用户ID",
+        `uid` CHAR(20) NOT NULL DEFAULT "" COMMENT "操作用户ID",
         `username` VARCHAR(50) NOT NULL DEFAULT "" COMMENT "操作用户名",
         `role` INT NOT NULL DEFAULT 0 COMMENT "操作用户类型",
         `method` VARCHAR(6) NOT NULL DEFAULT "" COMMENT "操作类型",

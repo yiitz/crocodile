@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `crocodile_host` (
-        `id` CHAR(18) NOT NULL COMMENT "主机ID",
+        `id` CHAR(20) NOT NULL COMMENT "主机ID",
         `addr` VARCHAR(25) NOT NULL COMMENT "Host地址",
         `hostname` VARCHAR(100) NOT NULL COMMENT "主机名",
         `runningTasks` TEXT COMMENT "运行的任务",

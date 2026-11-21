@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `crocodile_log` (
     `id` INT AUTO_INCREMENT COMMENT "ID",
     `name` VARCHAR(30) NOT NULL DEFAULT "" COMMENT "任务名称",
-    `taskid` CHAR(18) NOT NULL DEFAULT "" COMMENT "任务ID",
+    `taskid` CHAR(20) NOT NULL DEFAULT "" COMMENT "任务ID",
     `starttime` BIGINT NOT NULL DEFAULT 0  COMMENT "开始时间毫秒",
     `endtime` BIGINT NOT NULL DEFAULT 0 COMMENT "结束时间 毫秒",
     `totalruntime` INT NOT NULL  DEFAULT 0 COMMENT "总共运行时间",
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `crocodile_log` (
     `errcode` INT NOT NULL  DEFAULT 0 COMMENT "错误返回码",
     `errmsg` TEXT COMMENT "错误信息",-- "出错信息",
     `errtasktype` INT NOT NULL  DEFAULT 0 COMMENT "出错任务类型",
-    `errtaskid` CHAR(18) NOT NULL  DEFAULT ""  COMMENT "出错任务ID",
+    `errtaskid` CHAR(20) NOT NULL  DEFAULT ""  COMMENT "出错任务ID",
     `errtask` CHAR(30) NOT NULL  DEFAULT "" COMMENT "出错任务名称",
      PRIMARY KEY (`id`),
      KEY `idx_name` (`name`),
