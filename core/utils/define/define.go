@@ -93,7 +93,7 @@ func (tasktype TaskRespType) String() string {
 
 // GetID get task id in post
 type GetID struct {
-	ID string `json:"id" form:"id" binding:"required,len=18"`
+	ID string `json:"id" form:"id" binding:"required,min=18,max=20"`
 }
 
 // GetName get task name in post
@@ -141,11 +141,11 @@ type CreateAdminUser struct {
 
 // AdminChangeUser struct
 type AdminChangeUser struct {
-	ID       string `json:"id"  binding:"required,len=18"`       // user id
-	Role     Role   `json:"role" binding:"required,min=1,max=3"` // 用户类型: 1 普通用户 2 管理员
-	Forbid   bool   `json:"forbid"`                              // 禁止用户: 1 未禁止 2 禁止登陆
-	Password string `json:"password"`                            // 用户密码 Common
-	Remark   string `json:"remark"`                              // 备注 Common
+	ID       string `json:"id"  binding:"required,min=18,max=20"` // user id
+	Role     Role   `json:"role" binding:"required,min=1,max=3"`  // 用户类型: 1 普通用户 2 管理员
+	Forbid   bool   `json:"forbid"`                               // 禁止用户: 1 未禁止 2 禁止登陆
+	Password string `json:"password"`                             // 用户密码 Common
+	Remark   string `json:"remark"`                               // 备注 Common
 }
 
 // ChangeUserSelf change self's config
@@ -199,24 +199,24 @@ type Host struct {
 
 // Task define Task
 type Task struct {
-	TaskType          TaskType    `json:"task_type" binding:"required"`                 // 任务类型
-	TaskData          interface{} `json:"task_data" binding:"required"`                 // 任务数据
-	Run               bool        `json:"run" `                                         // 是否可以自动调度  如果为false则只能手动或者被其他任务依赖运行
-	ParentTaskIds     []string    `json:"parent_taskids" binding:"max=20"`              // 父任务 运行任务前先运行父任务 以父或子任务运行时 任务不会执行自已的父子任务，防止循环依赖
-	ParentRunParallel bool        `json:"parent_runparallel"`                           // 是否以并行运行父任务 0否 1是
-	ChildTaskIds      []string    `json:"child_taskids" binding:"max=20"`               // 子任务 运行结束后运行子任务
-	ChildRunParallel  bool        `json:"child_runparallel"`                            // 是否以并行运行子任务 否 1是
-	CreateBy          string      `json:"create_by"`                                    // 创建人
-	CreateByUID       string      `json:"create_byuid"`                                 // 创建人ID
-	HostGroup         string      `json:"host_group" `                                  // 主机组
-	HostGroupID       string      `json:"host_groupid" binding:"required,len=18"`       // 主机组ID
-	Cronexpr          string      `json:"cronexpr" binding:"required,max=1000"`         // 执行任务表达式
-	Timeout           int         `json:"timeout" binding:"required,min=-1"`            // 任务超时时间 (s) -1 no limit
-	AlarmUserIds      []string    `json:"alarm_userids" binding:"required,max=10"`      // 报警用户 最多十个多个用户
-	RoutePolicy       RoutePolicy `json:"route_policy" binding:"required,min=1,max=4"`  // how to select a run worker from hostgroup
-	ExpectCode        int         `json:"expect_code"`                                  // expect task return code. if not set 0 or 200
-	ExpectContent     string      `json:"expect_content"`                               // expect task return content. if not set do not check
-	AlarmStatus       AlarmStatus `json:"alarm_status" binding:"required,min=-2,max=1"` // alarm when task run success or fail or all all:-2 failed: -1 success: 1
+	TaskType          TaskType    `json:"task_type" binding:"required"`                  // 任务类型
+	TaskData          interface{} `json:"task_data" binding:"required"`                  // 任务数据
+	Run               bool        `json:"run" `                                          // 是否可以自动调度  如果为false则只能手动或者被其他任务依赖运行
+	ParentTaskIds     []string    `json:"parent_taskids" binding:"max=20"`               // 父任务 运行任务前先运行父任务 以父或子任务运行时 任务不会执行自已的父子任务，防止循环依赖
+	ParentRunParallel bool        `json:"parent_runparallel"`                            // 是否以并行运行父任务 0否 1是
+	ChildTaskIds      []string    `json:"child_taskids" binding:"max=20"`                // 子任务 运行结束后运行子任务
+	ChildRunParallel  bool        `json:"child_runparallel"`                             // 是否以并行运行子任务 否 1是
+	CreateBy          string      `json:"create_by"`                                     // 创建人
+	CreateByUID       string      `json:"create_byuid"`                                  // 创建人ID
+	HostGroup         string      `json:"host_group" `                                   // 主机组
+	HostGroupID       string      `json:"host_groupid" binding:"required,min=18,max=20"` // 主机组ID
+	Cronexpr          string      `json:"cronexpr" binding:"required,max=1000"`          // 执行任务表达式
+	Timeout           int         `json:"timeout" binding:"required,min=-1"`             // 任务超时时间 (s) -1 no limit
+	AlarmUserIds      []string    `json:"alarm_userids" binding:"required,max=10"`       // 报警用户 最多十个多个用户
+	RoutePolicy       RoutePolicy `json:"route_policy" binding:"required,min=1,max=4"`   // how to select a run worker from hostgroup
+	ExpectCode        int         `json:"expect_code"`                                   // expect task return code. if not set 0 or 200
+	ExpectContent     string      `json:"expect_content"`                                // expect task return content. if not set do not check
+	AlarmStatus       AlarmStatus `json:"alarm_status" binding:"required,min=-2,max=1"`  // alarm when task run success or fail or all all:-2 failed: -1 success: 1
 	Remark            string      `json:"remark" binding:"max=100"`
 }
 
